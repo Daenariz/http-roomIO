@@ -14,12 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Install PlatformIO CLI
+      # Step 2: Create credentials.h from example
+      - name: Setup credentials
+        run: |
+          cp src/example_credentials.h src/credentials.h
+
+      # Step 3: Install PlatformIO CLI
       - name: Install PlatformIO CLI
         run: |
           pip install --upgrade platformio
 
-      # Step 3: Run C++ linter (cpplint)
+      # Step 4: Run C++ linter (cpplint)
       - name: Run cpplint
         run: |
           pip install cpplint
@@ -28,7 +33,7 @@ jobs:
                    --exclude=lib/ \
                    --extensions=cpp,h src/ include/
 
-      # Step 4: Compile the project
+      # Step 5: Compile the project
       - name: Build with PlatformIO
         run: |
           pio run
