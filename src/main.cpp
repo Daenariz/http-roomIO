@@ -1,11 +1,11 @@
 #include <WiFi.h>
-#include <HTTPClient.h> 
+#include <HTTPClient.h>
 #include <credentials.h>
 
 #define LED_BUILTIN 2
 #define buttonPin 13
 
-int lastButtonState = HIGH; // pull-up-resistor (HIGH == unpressed button)
+int lastButtonState = HIGH;  // pull-up-resistor (HIGH == unpressed button)
 
 // Connects to WiFi
 void connectToWiFi() {
@@ -13,7 +13,7 @@ void connectToWiFi() {
   Serial.print("Connecting to WiFi");
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
-    delay(500); // Prevents excessive debug printing
+    delay(500);  // Prevents excessive debug printing
   }
   Serial.println("\nSuccess!");
 }
@@ -48,9 +48,9 @@ void fetchStateAndControlLED() {
     String payload = http.getString();
     Serial.println("Response: " + payload);
     if (payload == "closed") {
-      digitalWrite(LED_BUILTIN, HIGH); // Turn LED on
+      digitalWrite(LED_BUILTIN, HIGH);  // Turn LED on
     } else {
-      digitalWrite(LED_BUILTIN, LOW); // Turn LED off
+      digitalWrite(LED_BUILTIN, LOW);  // Turn LED off
     }
   } else {
     Serial.printf("GET failed: %s\n", http.errorToString(httpCode).c_str());
@@ -63,7 +63,7 @@ void handleButtonPress() {
   int buttonState = digitalRead(buttonPin);
   if (buttonState == LOW && lastButtonState == HIGH) {
     Serial.println("Button state changed");
-    delay(50); // Debounce delay
+    delay(50);  // Debounce delay
     sendToggleRequest();
   }
   lastButtonState = buttonState;
@@ -86,6 +86,6 @@ void loop() {
     fetchStateAndControlLED();
   } else {
     Serial.println("WiFi not connected!");
-    delay(1000); // Prevents excessive debug output
+    delay(1000);  // Prevents excessive debug output
   }
 }
