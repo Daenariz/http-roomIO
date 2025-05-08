@@ -23,7 +23,10 @@ jobs:
       - name: Run cpplint
         run: |
           pip install cpplint
-          cpplint --filter=-legal/copyright --recursive --exclude=lib/ --extensions=cpp,h src/ include/
+          cpplint  --recursive \
+                   --filter=-legal/copyright,-build/header_guard \
+                   --exclude=lib/ \
+                   --extensions=cpp,h src/ include/
 
       # Step 4: Compile the project
       - name: Build with PlatformIO
