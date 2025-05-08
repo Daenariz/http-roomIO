@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main, develop ]  # Runs on PRs targeting these branches
+  push:
+    branches-ignore: [ main, develop ]  # Ignore direct pushes to main/develop
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Install PlatformIO CLI
+      - name: Install PlatformIO CLI
+        run: |
+          pip install --upgrade platformio
+
+      # Step 3: Run C++ linter (cpplint)
+      - name: Run cpplint
+        run: |
+          pip install cpplint
+          cpplint --filter=-legal/copyright --recursive --exclude=lib/ --extensions=cpp,h src/ include/
+
+      # Step 4: Compile the project
+      - name: Build with PlatformIO
+        run: |
+          pio run
